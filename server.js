@@ -50,21 +50,22 @@ app.use('/direct-dial', (req, res) => {
         })
       } else {
         console.log(`SIP Route dialing to ${to}`);
-
+        let dial;
+        
         if(!DialMusic) {
-          xmlResponse.addDial({
+          dial = xmlResponse.addDial({
             callerId: from,
             callerName: CallerName
           })
         } else {
-          xmlResponse.addDial({
+          dial = xmlResponse.addDial({
             callerId: from,
             callerName: CallerName,
             dialMusic: DialMusic
           })
         }
 
-        isSipUser? xmlResponse.addUser(to) : xmlResponse.addNumber(to)
+        isSipUser? dial.addUser(to) : dial.addNumber(to)
       }
     }
 
