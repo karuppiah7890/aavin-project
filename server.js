@@ -20,6 +20,13 @@ app.get('/call', (req, res) => {
   })
 })
 
+app.get('/receive', (req, res) => {
+  res.render('receive.html', {
+    username: process.env.PLIVO_SIP_ENDPOINT_USERNAME,
+    password: process.env.PLIVO_SIP_ENDPOINT_PASSWORD
+  })
+})
+
 app.use('/direct-dial', (req, res) => {
   console.log(JSON.stringify(req.body, null, 2))
   try {

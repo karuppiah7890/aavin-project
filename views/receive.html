@@ -1,0 +1,160 @@
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Plivo Webphone Demo</title>
+        <meta name="description" content="">
+        <script language="javascript" content-type="text/javascript" src="static/jquery.js"></script>
+        <script type="text/javascript" src="http://s3.amazonaws.com/plivosdk/web/plivo.min.js"></script>
+        <link href="static/bootstrap-combined.min.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-top: 20px;
+                padding-bottom: 40px;
+            }
+            .container-narrow {
+                margin: 0 auto;
+                max-width: 700px;
+            }
+            .container-narrow > hr {
+                margin: 30px 0;
+            }
+            #btn-container a{
+                margin-top:7px;
+                min-width:7px;
+            }
+        </style>
+        <script type="text/javascript">
+            // Answer incoming calls
+            function answer() {
+                console.log("answering")
+                $('#status_txt').text('Answering....');
+                Plivo.conn.answer();
+                $('#status_txt').text('Answered the Call');
+                $('#btn-container').show();
+                $('#incoming_callbox').hide();
+            }
+            // Reject incoming calls
+            function reject() {
+                $('#status_txt').text('Rejected the Call');
+                Plivo.conn.reject();
+                $('#btn-container').hide();
+                $('#incoming_callbox').hide();
+                $('#status_txt').text('Ready');
+            }
+            // Incoming calls
+            function onIncomingCall(account_name, extraHeaders) {
+                console.log("onIncomingCall:"+account_name);
+                console.log("extraHeaders=");
+                for (var key in extraHeaders) {
+                    console.log("key="+key+".val="+extraHeaders[key]);
+                }
+                $('#status_txt').text('Incoming Call');
+                $('#incoming_callbox').show('slow');
+            }
+            // Login with SIP Endpoint
+            function login() {
+                // SIP Endpoint username and password
+                var username = '{{username}}';
+                var password = '{{password}}';
+                // Login
+                Plivo.conn.login(username, password);
+            }
+            function  onMediaPermission (result) {
+                if (result) {
+                    console.log("get media permission");
+                } else {
+                    alert("you don't allow media permission, you will can't make a call until you allow it");
+                }
+            }
+            function onCallTerminated() {
+                console.log("onCallTerminated");
+            }
+            function webrtcNotSupportedAlert() {
+                $('#txtStatus').text("");
+                alert("Your browser doesn't support WebRTC. You need Chrome 25 to use this demo");
+            }
+            function onLogin() {
+                $('#status_txt').text('Logged in');
+            }
+            function onLoginFailed() {
+                $('#status_txt').text("Login Failed");
+            }
+            function onReady() {
+                console.log("onReady...");
+                login();
+            }
+            function mute() {
+                Plivo.conn.mute();
+                $('#linkUnmute').show('slow');
+                $('#linkMute').hide('slow');
+            }
+            function unmute() {
+                Plivo.conn.unmute();
+                $('#linkUnmute').hide('slow');
+                $('#linkMute').show('slow');
+            }
+            function hangup() {
+                $('#status_txt').text('Hanging up..');
+                Plivo.conn.hangup();
+                $('#btn-container').hide();
+                $('#incoming_callbox').hide();
+                $('#status_txt').text('Ready');
+            }
+            function dtmf(digit) {
+                console.log("send dtmf="+digit);
+                Plivo.conn.send_dtmf(digit);
+            }
+            // Initialization
+            $(document).ready(function() {
+                Plivo.onWebrtcNotSupported = webrtcNotSupportedAlert;
+                Plivo.onReady = onReady;
+                Plivo.onLogin = onLogin;
+                Plivo.onLoginFailed = onLoginFailed;
+                Plivo.onCallTerminated = onCallTerminated;
+                Plivo.onIncomingCall = onIncomingCall;
+                Plivo.onMediaPermission = onMediaPermission;
+                Plivo.init();
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-narrow">
+            <div class="masthead">
+                <img class="muted" src="static/logo.png">
+            </div>
+            <div class="row-fluid marketing">
+                <div class="span12">
+                    <h4>Plivo WebSDK Webphone Demo</h4>
+                    <span class="label" id="status_txt">Login</span><br/><br/>
+                    </form>
+                        <div id="incoming_callbox" style="display: none;" class="call">
+                            <a href="#" class="btn main-btn btn-success" onclick="answer()">Answer</a>
+                            <a href="#" class="btn main-btn btn-danger" onclick="reject()">Reject</a>
+                        </div>
+                        <div id="btn-container" style="display: none">
+                            <a href="#" id="hangup_call" class="btn main-btn btn-danger" onclick="hangup();">Hangup</a>
+                            <a href="#" id="linkMute" class="badge badge-warning" onclick="mute();">Mute</a>
+                            <a href="#" id="linkUnmute" class="badge badge-warning" onclick="unmute();" style="display: none">Unmute</a><br/>
+                            <a class="btn btn-info" href="#" onclick="dtmf('1');">1</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('2');">2</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('3');">3</a>
+                        <br/>
+                        <a class="btn btn-info" href="#" onclick="dtmf('4');">4</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('5');">5</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('6');">6</a>
+                        <br/>
+                        <a class="btn btn-info" href="#" onclick="dtmf('7');">7</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('8');">8</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('9');">9</a>
+                        <br/>
+                        <a class="btn btn-info" href="#" onclick="dtmf('*');">*</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('0');">0</a>
+                        <a class="btn btn-info" href="#" onclick="dtmf('#');"> #</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
