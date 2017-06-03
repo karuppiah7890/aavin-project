@@ -1,0 +1,15 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+.container-narrow {
+    margin: 0 auto;
+    max-width: 700px;
+}
+.container-narrow > hr {
+    margin: 30px 0;
+}
+#btn-container a{
+    margin-top:7px;
+    min-width:7px;
+}

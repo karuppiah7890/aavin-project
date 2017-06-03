@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyparser = require('body-parser')
 const plivo = require('plivo')
-const nunjucks = require('nunjucks');
+const nunjucks = require('nunjucks')
 const PORT = process.env.PORT || 3000
 
 nunjucks.configure('views', {
@@ -12,6 +12,8 @@ nunjucks.configure('views', {
 app.use(bodyparser.urlencoded({ extended: false }))
 
 app.use('/static', express.static('static'))
+app.use('/js', express.static('views/js'))
+app.use('/css', express.static('views/css'))
 
 app.get('/call', (req, res) => {
   res.render('call.html', {
@@ -65,13 +67,13 @@ app.use('/direct-dial', (req, res) => {
           reason: 'busy'
         })
       } else if(isSipUser && (['all', 'number'].indexOf(DisableCall) !== -1)) {
-        console.log(`SIP Route calling number is disabled : ${DisableCall}`);
+        console.log(`SIP Route calling number is disabled : ${DisableCall}`)
         xmlResponse.addHangup({
           reason: 'busy'
         })
       } else {
-        console.log(`SIP Route dialing to ${to}`);
-        let dial;
+        console.log(`SIP Route dialing to ${to}`)
+        let dial
 
         if(!DialMusic) {
           dial = xmlResponse.addDial({
@@ -90,10 +92,10 @@ app.use('/direct-dial', (req, res) => {
       }
     }
 
-    res.set('Content-Type', 'text/xml');
-    res.send(xmlResponse.toXML());
+    res.set('Content-Type', 'text/xml')
+    res.send(xmlResponse.toXML())
   } catch(err) {
-    console.log(`An error occured! ${err}`);
+    console.log(`An error occured! ${err}`)
     res.status(500).send('Internal error')
   }
 })
