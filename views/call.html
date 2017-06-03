@@ -59,6 +59,9 @@
             function logout() {
                 $('#status_txt').text('Logged out');
                 Plivo.conn.logout();
+                $('#callcontainer').hide();
+                $('#logout_box').hide();
+                $('#login_box').show();
             }
             function isNotEmpty(n) {
                 return n.length > 0;
@@ -81,6 +84,8 @@
             function onLogin() {
                 $('#status_txt').text('Logged in');
                 $('#logout_box').show();
+                $('#callcontainer').show();
+                $('#login_box').hide();
             }
             function onLoginFailed() {
                 $('#status_txt').text("Login Failed");
@@ -122,12 +127,14 @@
                     </div>
                     <br>
                     <span class="label" id="status_txt">Login</span><br/><br/>
-                    <form id="callcontainer" style="">
+                    <form id="callcontainer" style="display: none">
                         <input type="text" name="to" value="" id="to" placeholder="Phone number or a SIP URI">
                         <br/>
-                        <a href="#" onclick="login();">Login</a>
                         <a href="#" id="make_call" class="btn main-btn btn-success" onclick="call();">Call</a>
                     </form>
+                    <div id="login_box">
+                      <a href="#" onclick="login();">Login</a>
+                    <div>
                 </div>
             </div>
         </div>
