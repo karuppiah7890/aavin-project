@@ -1,0 +1,23 @@
+{
+  "name": "aavin-project",
+  "version": "1.0.0",
+  "description": "Project for Aavin",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "plivo",
+    "voice",
+    "web-sdk",
+    "web-rtc"
+  ],
+  "author": "Karuppiah N <karuppiah7890@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "plivo": "^0.4.1"
+  }
+}
