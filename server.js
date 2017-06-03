@@ -2,9 +2,23 @@ const express = require('express')
 const app = express()
 const bodyparser = require('body-parser')
 const plivo = require('plivo')
+const nunjucks = require('nunjucks');
 const PORT = process.env.PORT || 3000
 
+nunjucks.configure('views', {
+  express: app
+})
+
 app.use(bodyparser.urlencoded({ extended: false }))
+
+app.use('/static', express.static('static'))
+
+app.get('/call', (req, res) => {
+  res.render('call.html', {
+    username: process.env.PLIVO_SIP_ENDPOINT_USERNAME,
+    password: process.env.PLIVO_SIP_ENDPOINT_PASSWORD
+  })
+})
 
 app.use('/direct-dial', (req, res) => {
   console.log(JSON.stringify(req.body, null, 2))
@@ -51,7 +65,7 @@ app.use('/direct-dial', (req, res) => {
       } else {
         console.log(`SIP Route dialing to ${to}`);
         let dial;
-        
+
         if(!DialMusic) {
           dial = xmlResponse.addDial({
             callerId: from,
