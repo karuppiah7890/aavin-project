@@ -47,42 +47,37 @@ module.exports = {
       if(req.user.role === 'admin') {
         res.render('createParlor.html')
       } else {
-        res.status(403).send('You are not allowed to access this page. Only Admin can access this page.');
+        res.status(403).send('You are not allowed to access this page. Only Admin can access this page.')
       }
     })
     .post((req, res) => {
       if(req.user && req.user.role === 'admin') {
-        console.log(req.body);
-        const {parlorName} = req.body;
+        console.log(req.body)
+        const {parlorName} = req.body
 
         Parlor.findOne({parlorName: parlorName})
         .then((result) => {
           if(result) {
-            res.json({
-              status: 'success',
-              message: Constants.PARLOR_ALREADY_EXISTS
-            })
+            throw new Error(Constants.PARLOR_ALREADY_EXISTS)
           } else {
-            Parlor.create({
+            return Parlor.create({
               parlorName: parlorName
-            })
-            .then((result) => {
-              if(result) {
-                res.json({
-                  status: 'success',
-                  message: Constants.PARLOR_CREATED
-                })
-              } else {
-                res.json(errorJSON.errorOccurred('Some error occurred'))
-              }
-            })
-            .catch((err) => {
-              res.json(errorJSON.errorOccurred(err))
             })
           }
         })
+        .then((result) => {
+          if(result) {
+            res.json({
+              status: 'success',
+              message: Constants.PARLOR_CREATED
+            })
+          } else {
+            res.json(errorJSON.errorOccurred('Some error occurred'))
+          }
+        })
         .catch((err) => {
-          res.json(errorJSON.errorOccurred(err))
+          console.log(err)
+          res.json(errorJSON.errorOccurred(err.message))
         })
 
       } else {

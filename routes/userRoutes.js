@@ -15,19 +15,19 @@ module.exports = {
       if(req.user.role === 'admin') {
         res.render('createUser.html')
       } else {
-        res.status(403).send('You are not allowed to access this page. Only Admin can access this page.');
+        res.status(403).send('You are not allowed to access this page. Only Admin can access this page.')
       }
     })
     .post((req, res) => {
       if(req.user && req.user.role === 'admin') {
-        console.log(req.body);
+        //console.log(req.body)
         const {
           username,
           password,
           displayName,
           role,
           parlorId
-        } = req.body;
+        } = req.body
 
         console.log(new mongoose.Types.ObjectId(parlorId))
 
@@ -69,7 +69,7 @@ module.exports = {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           res.json(errorJSON.errorOccurred(err.message))
         })
 

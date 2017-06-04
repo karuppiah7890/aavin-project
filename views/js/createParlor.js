@@ -1,6 +1,9 @@
 const Constants = {
   PARLOR_CREATED: 'Parlour Created',
-  PARLOR_ALREADY_EXISTS: 'Parlor already exists'
+  PARLOR_ALREADY_EXISTS: 'Parlor already exists',
+  PARLOR_DOESNT_EXIST: `Parlor doesn't exist`,
+  USER_ALREADY_EXISTS: 'User already exists',
+  USER_CREATED: 'User Created'
 }
 
 $(document).ready(function(){
@@ -10,12 +13,12 @@ $(document).ready(function(){
 
     if(parlorName === '') {
       alert('Fill in the parlor name!')
-      return  
+      return
     }
 
     const data = {
       parlorName: parlorName
-    };
+    }
 
     $.ajax({
       url: `${window.location.origin}/createParlor`,
@@ -29,24 +32,30 @@ $(document).ready(function(){
   })
 
   function onSuccessFunc(response) {
-    console.log('Ajax Success response: ', response);
     if(response.status === 'success') {
-      if(response.message === Constants.PARLOR_ALREADY_EXISTS) {
-        alert(Constants.PARLOR_ALREADY_EXISTS)
-      } else if(response.message === Constants.PARLOR_CREATED){
+      console.log('Success response: ', response)
+
+      if(response.message === Constants.PARLOR_CREATED){
         alert(Constants.PARLOR_CREATED)
       } else {
         console.log('Unknown message')
-        alert('Unknown message received from server')
+        alert('Unknown error has occurred while creating parlor')
       }
     } else {
-      alert('Some error occurred while creating a parlor')
+      console.log('Error response: ', response)
+
+      if(response.error === Constants.PARLOR_ALREADY_EXISTS) {
+        alert(Constants.PARLOR_ALREADY_EXISTS)
+      } else {
+        console.log('Unknown message')
+        alert('Unknown error has occurred while creating parlor')
+      }
     }
 
   }
 
   function onErrorFunc(err) {
-    console.log('Error in ajax call: ', err);
+    console.log('Error in ajax call: ', err)
     alert('Some error in sending request to server')
   }
 

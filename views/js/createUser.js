@@ -75,7 +75,7 @@ $(document).ready(function(){
 
   function onSuccessCreateUserFunc(response) {
     if(response.status === 'success') {
-      console.log('Success response: ', response);
+      console.log('Success response: ', response)
       if(response.message === Constants.USER_CREATED){
         alert(Constants.USER_CREATED)
       } else {
@@ -83,7 +83,7 @@ $(document).ready(function(){
         alert('Unknown error has occurred while creating user')
       }
     } else {
-      console.log('Error response: ', response.error)
+      console.log('Error response: ', response)
 
       if(response.error === Constants.PARLOR_DOESNT_EXIST) {
         alert(Constants.PARLOR_DOESNT_EXIST)
