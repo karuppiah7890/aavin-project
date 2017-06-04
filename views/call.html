@@ -4,7 +4,10 @@
         <meta charset="utf-8">
         <title>Plivo Webphone Demo</title>
         <meta name="description" content="">
-        <script language="javascript" content-type="text/javascript" src="static/jquery.js"></script>
+        <script
+    			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+    			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    			  crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://s3.amazonaws.com/plivosdk/web/plivo.min.js"></script>
         <link href="static/bootstrap-combined.min.css" rel="stylesheet">
         <link href="/css/call.css" rel="stylesheet">
@@ -14,6 +17,7 @@
               // SIP Endpoint username and password
               var username = '{{username}}';
               var password = '{{password}}';
+              $('#status_txt').text('Logging in');
               // Login
               Plivo.conn.login(username, password);
           }
