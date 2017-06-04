@@ -11,6 +11,7 @@ const ensureLogin = require('connect-ensure-login')
 const auth = require('./auth')(config)
 const parlorRoutes = require('./routes/parlorRoutes');
 const dialRoutes = require('./routes/dialRoutes');
+const userRoutes = require('./routes/userRoutes')
 const flash = require('connect-flash')
 
 nunjucks.configure('views', {
@@ -55,6 +56,7 @@ app.post('/order', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
 
 parlorRoutes.routes(app)
 dialRoutes.routes(app)
+userRoutes.routes(app)
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`)
