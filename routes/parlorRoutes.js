@@ -2,7 +2,8 @@ const ensureLogin = require('connect-ensure-login'),
   mongoose = require('mongoose'),
   Parlor = mongoose.model('Parlor'),
   errorJSON = require('../error/errorJSON')
-
+  Constants = require('../Constants')
+  
 module.exports = {
   routes: function(app) {
 
@@ -59,7 +60,7 @@ module.exports = {
           if(result) {
             res.json({
               status: 'success',
-              message: 'exists'
+              message: Constants.PARLOR_EXISTS
             })
           } else {
             Parlor.create({
@@ -69,7 +70,7 @@ module.exports = {
               if(result) {
                 res.json({
                   status: 'success',
-                  message: 'created'
+                  message: Constants.PARLOR_CREATED
                 })
               } else {
                 res.json(errorJSON.errorOccurred('Some error occurred'))

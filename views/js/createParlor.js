@@ -1,3 +1,8 @@
+const Constants = {
+  PARLOR_CREATED: 'Parlour Created',
+  PARLOR_ALREADY_EXISTS: 'Parlor already exists'
+}
+
 $(document).ready(function(){
   $('#form').submit(function(e){
     e.preventDefault()
@@ -20,10 +25,13 @@ $(document).ready(function(){
   function onSuccessFunc(response) {
     console.log('Ajax Success response: ', response);
     if(response.status === 'success') {
-      if(response.message === 'exists') {
-        alert('Parlor already exists')
+      if(response.message === Constants.PARLOR_ALREADY_EXISTS) {
+        alert(Constants.PARLOR_ALREADY_EXISTS)
+      } else if(response.message === Constants.PARLOR_CREATED){
+        alert(Constants.PARLOR_CREATED)
       } else {
-        alert('Parlor created!')
+        console.log('Unknown message')
+        alert('Unknown message received from server')
       }
     } else {
       alert('Some error occurred while creating a parlor')
