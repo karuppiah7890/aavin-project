@@ -3,7 +3,7 @@ const ensureLogin = require('connect-ensure-login'),
   Parlor = mongoose.model('Parlor'),
   errorJSON = require('../error/errorJSON')
   Constants = require('../Constants')
-  
+
 module.exports = {
   routes: function(app) {
 
@@ -60,7 +60,7 @@ module.exports = {
           if(result) {
             res.json({
               status: 'success',
-              message: Constants.PARLOR_EXISTS
+              message: Constants.PARLOR_ALREADY_EXISTS
             })
           } else {
             Parlor.create({

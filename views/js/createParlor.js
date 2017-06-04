@@ -7,6 +7,12 @@ $(document).ready(function(){
   $('#form').submit(function(e){
     e.preventDefault()
     const parlorName = $('#parlorName').val()
+
+    if(parlorName === '') {
+      alert('Fill in the parlor name!')
+      return  
+    }
+
     const data = {
       parlorName: parlorName
     };
