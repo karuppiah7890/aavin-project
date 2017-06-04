@@ -29,6 +29,10 @@ app.get('/receive', (req, res) => {
   })
 })
 
+app.get('/order', (req, res) => {
+  res.render('take-order.html');
+})
+
 app.use('/direct-dial', (req, res) => {
   console.log(JSON.stringify(req.body, null, 2))
   try {
