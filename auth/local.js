@@ -2,7 +2,8 @@ module.exports = function(passport) {
 
   const LocalStrategy = require('passport-local').Strategy,
     mongoose = require('mongoose'),
-    User = mongoose.model('User')
+    User = mongoose.model('User'),
+    Log = mongoose.model('Log')
 
   passport.use(new LocalStrategy({
     passReqToCallback : true
@@ -12,7 +13,27 @@ module.exports = function(passport) {
       .then((result) => {
           if(result) {
             //console.log("found local user in db", result)
-            done(null, result)
+            const {
+              username,
+              displayName,
+              role
+            } = result
+
+            Log.create({
+              username: username,
+              displayName: displayName,
+              role: role,
+              logDetail: 'in'
+            }).then((logCreatedResult) => {
+              if(!logCreatedResult) {
+                console.log('Some error occurred while logging into Logs collection')
+              }
+              done(null, result)
+            }).catch((err) => {
+              console.log('Error occurred while logging into Logs collection. Error: ', err)
+              done(null, result)
+            })
+
           } else {
             req.flash('message','Invalid username or password')
             done(null, false)

@@ -1,7 +1,7 @@
 module.exports = function(config) {
 
   const mongoose = require('mongoose'),
-  User = mongoose.model('User'),
+  Log = mongoose.model('Log'),
   passport = require('passport'),
   local = require('./local')(passport),
   sessions = require('./sessions')
@@ -17,9 +17,30 @@ module.exports = function(config) {
 
       // GET - HTML response (redirect)
       app.get('/logout', function(req, res){
-        req.logout()
-        req.flash('message', 'Successfully logged out!')
-        res.redirect('/login')
+        const {
+          username,
+          displayName,
+          role
+        } = req.user
+
+        Log.create({
+          username: username,
+          displayName: displayName,
+          role: role,
+          logDetail: 'out'
+        }).then((logCreatedResult) => {
+          if(!logCreatedResult) {
+            console.log('Some error occurred while logging into Logs collection')
+          }
+          req.logout()
+          req.flash('message', 'Successfully logged out!')
+          res.redirect('/login')
+        }).catch((err) => {
+          console.log('Error occurred while logging into Logs collection. Error: ', err)
+          req.logout()
+          req.flash('message', 'Successfully logged out!')
+          res.redirect('/login')
+        })
       });
 
     }

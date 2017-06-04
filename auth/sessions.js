@@ -1,9 +1,9 @@
 module.exports = function(passport) {
   const mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User')
 
   passport.serializeUser(function(profile, done) {
-    console.log(`Store the user's username: ${profile.username} in session data store`);
+    //console.log(`Store the user's username: ${profile.username} in session data store`);
     const sessionData = {
       username: profile.username
     };
