@@ -1,36 +1,54 @@
+const PORT = process.env.PORT || 3000
+
+const config = require('./config')(PORT)[process.env.APP_ENV]
+
 const express = require('express')
 const app = express()
+const db = require('./db')(config)
 const bodyparser = require('body-parser')
 const plivo = require('plivo')
 const nunjucks = require('nunjucks')
-const PORT = process.env.PORT || 3000
+const ensureLogin = require('connect-ensure-login')
+const auth = require('./auth')(config)
+const flash = require('connect-flash')
 
 nunjucks.configure('views', {
   express: app
 })
 
-app.use(bodyparser.urlencoded({ extended: false }))
-
+app.use(require('cookie-parser')())
+app.use(require('body-parser').urlencoded({ extended: true }))
+app.use(require('express-session')({ secret: 'horsehasalegandlionhasatail', resave: false, saveUninitialized: false }))
+app.use(flash())
 app.use('/static', express.static('static'))
 app.use('/js', express.static('views/js'))
 app.use('/css', express.static('views/css'))
 
-app.get('/call', (req, res) => {
+auth.init(app)
+
+app.get('/call', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('call.html', {
     username: process.env.PLIVO_SIP_ENDPOINT_USERNAME,
     password: process.env.PLIVO_SIP_ENDPOINT_PASSWORD
   })
 })
 
-app.get('/receive', (req, res) => {
+app.get('/receive', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   res.render('receive.html', {
     username: process.env.PLIVO_SIP_ENDPOINT_USERNAME,
     password: process.env.PLIVO_SIP_ENDPOINT_PASSWORD
   })
 })
 
-app.get('/order', (req, res) => {
-  res.render('take-order.html');
+app.get('/order', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  if(req.user.role === 'support_staff')
+    res.render('take-order.html')
+  else
+    res.status(403).send('You are not allowed to access this page');
+})
+
+app.post('/order', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+  //if(req.user.role === 'support_staff') {  }
 })
 
 app.use('/direct-dial', (req, res) => {

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Log In</title>
+  </head>
+  <body>
+    {% if message %}
+      {{ message }}
+    {% endif %}
+    <form action="/login" method="post">
+      <input type="text" name="username"><br>
+      <input type="password" name="password"><br>
+      <input type="submit" value="Sign In">
+    </form>
+  </body>
+</html>
