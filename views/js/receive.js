@@ -25,14 +25,6 @@ function onIncomingCall(account_name, extraHeaders) {
     $('#status_txt').text('Incoming Call');
     $('#incoming_callbox').show('slow');
 }
-// Login with SIP Endpoint
-function login() {
-    // SIP Endpoint username and password
-    var username = '{{username}}';
-    var password = '{{password}}';
-    // Login
-    Plivo.conn.login(username, password);
-}
 function  onMediaPermission (result) {
     if (result) {
         console.log("get media permission");

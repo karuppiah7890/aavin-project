@@ -21,14 +21,6 @@ function call() {
         $('#status_txt').text('Ready');
     }
 }
-// Login with SIP Endpoint
-function login() {
-    // SIP Endpoint username and password
-    var username = '{{username}}';
-    var password = '{{password}}';
-    // Login
-    Plivo.conn.login(username, password);
-}
 function logout() {
     $('#status_txt').text('Logged out');
     Plivo.conn.logout();

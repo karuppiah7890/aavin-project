@@ -8,6 +8,16 @@
         <script type="text/javascript" src="https://s3.amazonaws.com/plivosdk/web/plivo.min.js"></script>
         <link href="static/bootstrap-combined.min.css" rel="stylesheet">
         <link href="/css/receive.css" rel="stylesheet">
+        <script type="text/javascript">
+          // Login with SIP Endpoint
+          function login() {
+              // SIP Endpoint username and password
+              var username = '{{username}}';
+              var password = '{{password}}';
+              // Login
+              Plivo.conn.login(username, password);
+          }
+        </script>
         <script type="text/javascript" src="/js/receive.js"></script>
     </head>
     <body>
