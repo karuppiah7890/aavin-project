@@ -5,7 +5,7 @@ module.exports = function(config) {
   passport = require('passport'),
   local = require('./local')(passport),
   sessions = require('./sessions')
-  
+
   sessions(passport)
 
   return {
@@ -13,12 +13,9 @@ module.exports = function(config) {
       app.use(passport.initialize())
       app.use(passport.session())
 
-      app.get('/login', (req,res) => {
-        res.render('login.html', { message: req.flash('message') })
-      });
-
       local.routes(app);
 
+      // GET - HTML response (redirect)
       app.get('/logout', function(req, res){
         req.logout()
         req.flash('message', 'Successfully logged out!')
