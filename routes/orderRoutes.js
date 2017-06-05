@@ -17,25 +17,25 @@ module.exports = {
       }
 
       const {
-        beforeDate
+        beforeTimestamp
       } = req.body;
 
-      const date = beforeDate? beforeDate : new Date()
-      //console.log(date);
+      const timestamp = beforeTimestamp? beforeTimestamp : new Date()
+      //console.log(timestamp);
 
       const role = req.user.role;
       let query;
 
       if(role === 'admin')
-        query = Order.where('createdAt').lt(date).sort({ createdAt: 'desc' }).limit(10)
+        query = Order.where('createdAt').lt(timestamp).sort({ createdAt: 'desc' }).limit(10)
 
       else if(role === 'support_staff')
-        query = Order.find({createdBy: req.user.username}).where('createdAt').lt(date)
+        query = Order.find({createdBy: req.user.username}).where('createdAt').lt(timestamp)
                      .sort({ createdAt: 'desc' }).limit(10)
 
       else
         query = Order.find({parlorId: req.user.roleDetails.parlorId}).where('createdAt')
-                     .lt(date).sort({ createdAt: 'desc' }).limit(10)
+                     .lt(timestamp).sort({ createdAt: 'desc' }).limit(10)
 
       query.exec()
       .then((result) => {
