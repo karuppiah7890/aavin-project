@@ -8,17 +8,20 @@
     crossorigin="anonymous">
   </head>
   <body>
-    <form id="order_form" action="#" method="POST">
-      <input type="text" name="name" value="" placeholder="Name"> <br>
-      <input type="text" name="address" value="" placeholder="Address"> <br>
-      <input type="text" name="mobile" value="" placeholder="Mobile Number"> <br>
-      <input type="text" name="order" value="" placeholder="Order"> <br>
-      <input type="text" name="parlor_id" value="" placeholder="Parlor ID"> <br>
+    <form id="form" action="#" method="post">
+      <input type="text" id="customerName" value="" placeholder="Customer Name"> <br>
+      <input type="text" id="customerAddress" value="" placeholder="Customer Address"> <br>
+      <input type="text" id="customerMobile" value="" placeholder="Customer Mobile Number"> <br>
+      <input type="text" id="orderDetails" value="" placeholder="Order"> <br>
+      <select id="parlorId">
+      </select><br>
       <input type="submit" name="" value="Order Now">
     </form>
     <script
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
 			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 			  crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/bundledjs/createOrder.js"></script>
+
   </body>
 </html>

@@ -9,9 +9,10 @@ const bodyparser = require('body-parser')
 const nunjucks = require('nunjucks')
 const ensureLogin = require('connect-ensure-login')
 const auth = require('./auth')(config)
-const parlorRoutes = require('./routes/parlorRoutes');
-const dialRoutes = require('./routes/dialRoutes');
+const parlorRoutes = require('./routes/parlorRoutes')
+const dialRoutes = require('./routes/dialRoutes')
 const userRoutes = require('./routes/userRoutes')
+const orderRoutes = require('./routes/orderRoutes')
 const flash = require('connect-flash')
 
 nunjucks.configure('views', {
@@ -43,20 +44,10 @@ app.get('/receive', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
   })
 })
 
-app.get('/order', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  if(req.user.role === 'support_staff')
-    res.render('take-order.html')
-  else
-    res.status(403).send('You are not allowed to access this page');
-})
-
-app.post('/order', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
-  //if(req.user.role === 'support_staff') {  }
-})
-
 parlorRoutes.routes(app)
 dialRoutes.routes(app)
 userRoutes.routes(app)
+orderRoutes.routes(app)
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`)
