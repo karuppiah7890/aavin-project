@@ -24,7 +24,7 @@ app.use(require('body-parser').json())
 app.use(require('express-session')({ secret: 'horsehasalegandlionhasatail', resave: false, saveUninitialized: false }))
 app.use(flash())
 app.use('/static', express.static('static'))
-app.use('/js', express.static('views/js'))
+app.use('/bundledjs', express.static('views/bundledjs'))
 app.use('/css', express.static('views/css'))
 
 auth.init(app)
