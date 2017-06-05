@@ -13,6 +13,16 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'Name is required']
   },
+  mobile: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        return /^\d{10}$/.test(v)
+      },
+      message: '{VALUE} is not a valid mobile number!'
+    },
+    required: [true, 'User mobile number is required']
+  },
   role: {
     type: String,
     enum: ['admin', 'support_staff', 'parlor_staff'],

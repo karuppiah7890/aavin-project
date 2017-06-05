@@ -25,6 +25,7 @@ module.exports = {
           username,
           password,
           displayName,
+          mobile,
           role,
           parlorId
         } = req.body
@@ -48,6 +49,13 @@ module.exports = {
           });
         }
 
+        const newUser = {
+          username: username,
+          password: password,
+          displayName: displayName,
+          mobile: mobile,
+          role: role
+        }
 
         promise.then((result) => {
           if(result === check_user){
@@ -66,22 +74,12 @@ module.exports = {
           if(result) {
             throw new Error(Constants.USER_ALREADY_EXISTS)
           } else if(role === 'parlor_staff'){
-            return User.create({
-              username: username,
-              password: password,
-              displayName: displayName,
-              role: role,
-              roleDetails: {
-                parlorId: parlorId
-              }
-            })
+            newUser.roleDetails = {
+              parlorId: parlorId
+            }
+            return User.create(newUser)
           } else {
-            return User.create({
-              username: username,
-              password: password,
-              displayName: displayName,
-              role: role
-            })
+            return User.create(newUser)
           }
         })
         .then((result) => {

@@ -53,6 +53,7 @@ $(document).ready(function(){
     const username = $('#username').val(),
       password = $('#password').val(),
       displayName = $('#displayName').val(),
+      mobile = $('#mobile').val(),
       role = $('#role option:selected').val(),
       parlorId = $('#parlorId option:selected').val()
 
@@ -60,6 +61,7 @@ $(document).ready(function(){
       username: username,
       password: password,
       displayName: displayName,
+      mobile: mobile,
       role: role
     }
 
@@ -73,6 +75,11 @@ $(document).ready(function(){
         alert('Fill in all fields!')
         return
       }
+    }
+
+    if(!(/^\d{10}$/.test(mobile))) {
+      alert(`Mobile number should be 10 digits. Don't include country codes`)
+      return
     }
 
     var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
