@@ -8,6 +8,58 @@ const ensureLogin = require('connect-ensure-login'),
 module.exports = {
   routes: function(app) {
 
+    // GET - JSON response
+    app.get('/getOrders', (req, res) => {
+
+      if(!req.user) {
+        res.json(errorJSON.accessDenied('Admin/Support Staff/Parlor Staff'))
+        return
+      }
+
+      const {
+        beforeDate
+      } = req.body;
+
+      const date = beforeDate? beforeDate : new Date()
+      //console.log(date);
+
+      const role = req.user.role;
+      let query;
+
+      if(role === 'admin')
+        query = Order.where('createdAt').lt(date).sort({ createdAt: 'desc' }).limit(10)
+
+      else if(role === 'support_staff')
+        query = Order.find({createdBy: req.user.username}).where('createdAt').lt(date)
+                     .sort({ createdAt: 'desc' }).limit(10)
+
+      else
+        query = Order.find({parlorId: req.user.roleDetails.parlorId}).where('createdAt')
+                     .lt(date).sort({ createdAt: 'desc' }).limit(10)
+
+      query.exec()
+      .then((result) => {
+        if(!result) {
+          res.json({
+            status: 'success',
+            data: []
+          })
+        } else {
+          //console.log(result)
+          res.json({
+            status: 'success',
+            data: result
+          })
+        }
+      })
+      .catch((err) => {
+        res.json({
+          status: 'error',
+          error: err
+        })
+      })
+    })
+
     // GET - HTML response.
     // POST - JSON response
     app.route('/createOrder')
