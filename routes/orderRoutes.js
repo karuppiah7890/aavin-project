@@ -8,8 +8,58 @@ const ensureLogin = require('connect-ensure-login'),
 module.exports = {
   routes: function(app) {
 
-    // GET - JSON response
-    app.get('/getOrders', (req, res) => {
+    //POST - JSON response
+    app.post('/getOrderStatus', (req, res) => {
+      if(!req.user) {
+        res.json(errorJSON.accessDenied('Admin/Support Staff/Parlor Staff'))
+        return
+      }
+
+      const {
+        orderId
+      } = req.body;
+
+      if(!orderId) {
+        res.json(errorJSON.errorOccurred('Invalid Order ID'))
+        return
+      }
+
+      Order.findOne({
+        _id: new mongoose.Types.ObjectId(orderId)
+      })
+      .then((result) => {
+        res.json({
+          status: 'success',
+          data: {
+            _id: result._id,
+            orderStatus: result.orderStatus,
+            statusUpdatedAt: result.statusUpdatedAt
+          }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.json(errorJSON.errorOccurred(err.message))
+      })
+
+    })
+
+    //POST - JSON response
+    app.post('/setOrderStatus', (req, res) => {
+
+      if(req.user && req.user.role === 'parlor_staff') {
+
+      } else {
+        res.json(errorJSON.accessDenied('Parlor Staff'))
+        return
+      }
+
+    })
+
+    // POST - JSON response
+    app.post('/getOrders', (req, res) => {
+
+      console.log(req.body)
 
       if(!req.user) {
         res.json(errorJSON.accessDenied('Admin/Support Staff/Parlor Staff'))
@@ -17,27 +67,50 @@ module.exports = {
       }
 
       const {
-        beforeTimestamp
+        beforeTimestamp,
+        afterTimestamp
       } = req.body;
 
-      const timestamp = beforeTimestamp? beforeTimestamp : new Date()
-      //console.log(timestamp);
+      let beforeTs, afterTs, limit
+
+      if(afterTimestamp && beforeTimestamp) {
+        // for getting orders in between two timestamps - can be used for analysis
+        afterTs = afterTimestamp
+        beforeTs = beforeTimestamp
+      } else if(afterTimestamp){
+        // for getting latest orders after a timestamp
+        afterTs = afterTimestamp
+        beforeTs = new Date()
+      } else if(beforeTimestamp){
+        // for getting older orders before a timestamp
+        afterTs = new Date("1970-01-01")
+        beforeTs = beforeTimestamp
+        limit = 10
+      } else {
+        // for getting latest orders
+        afterTs = new Date("1970-01-01")
+        beforeTs = new Date()
+        limit = 10
+      }
+
+      console.log('beforeTs: ', beforeTs, '. afterTs: ', afterTs);
 
       const role = req.user.role;
       let query;
 
       if(role === 'admin')
-        query = Order.where('createdAt').lt(timestamp).sort({ createdAt: 'desc' }).limit(10)
+        query = Order.where('createdAt').gt(afterTs).lt(beforeTs).sort({ createdAt: 'desc' })
 
       else if(role === 'support_staff')
-        query = Order.find({createdBy: req.user.username}).where('createdAt').lt(timestamp)
-                     .sort({ createdAt: 'desc' }).limit(10)
+        query = Order.find({createdBy: req.user.username}).where('createdAt').gt(afterTs).lt(beforeTs)
+                     .sort({ createdAt: 'desc' })
 
       else
         query = Order.find({parlorId: req.user.roleDetails.parlorId}).where('createdAt')
-                     .lt(timestamp).sort({ createdAt: 'desc' }).limit(10)
+                     .gt(afterTs).lt(beforeTs).sort({ createdAt: 'desc' })
 
-      query.exec()
+
+      query.limit(limit).exec()
       .then((result) => {
         if(!result) {
           res.json({
@@ -111,7 +184,8 @@ module.exports = {
           if(result) {
             res.json({
               status: 'success',
-              message: Constants.ORDER_CREATED
+              message: Constants.ORDER_CREATED,
+              data: result
             })
           } else {
             throw new Error('Some error occurred')
