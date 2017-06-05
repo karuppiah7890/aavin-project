@@ -8,24 +8,35 @@ const Constants = {
 
 $(document).ready(function(){
 
-  $.ajax({
-    url: `${window.location.origin}/getParlors`,
-    method: 'GET',
-    dataType: 'json',
-    contentType: 'application/json',
-    success: onSuccessGetParlor,
-    error: onErrorGetParlor
+  $('#role').change(function(e) {
+    if($('#role option:selected').val() === 'parlor_staff')
+      getParlors();
+    else
+      $('.parlorSelect').hide();
   })
+
+  function getParlors() {
+    $.ajax({
+      url: `${window.location.origin}/getParlors`,
+      method: 'GET',
+      dataType: 'json',
+      contentType: 'application/json',
+      success: onSuccessGetParlor,
+      error: onErrorGetParlor
+    })
+  }
 
   function onSuccessGetParlor(response) {
     console.log('Ajax Success response: ', response)
 
     if(response.status === 'success') {
       if(response.data.length > 0) {
+        $('#parlorId option').remove()
         response.data.forEach(function(val) {
           const option = `<option value="${val._id}">${val.parlorName}</option>`
           $('#parlorId').append(option)
         })
+        $('.parlorSelect').show();
       } else {
         alert('No parlors available. Create parlor first')
       }
@@ -49,9 +60,11 @@ $(document).ready(function(){
       username: username,
       password: password,
       displayName: displayName,
-      role: role,
-      parlorId: parlorId
+      role: role
     }
+
+    if(role === 'parlor_staff')
+    data.parlorId = parlorId;
 
     console.log(data)
 
@@ -60,6 +73,12 @@ $(document).ready(function(){
         alert('Fill in all fields!')
         return
       }
+    }
+
+    var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
+    if(role === 'parlor_staff' && !checkForHexRegExp.test(data.parlorId)) {
+      alert('Not a valid ID for the parlor name')
+      return;
     }
 
     $.ajax({

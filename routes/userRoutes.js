@@ -29,13 +29,32 @@ module.exports = {
           parlorId
         } = req.body
 
-        console.log(new mongoose.Types.ObjectId(parlorId))
+        let promise;
+        const check_user = 'check user';
 
-        Parlor.findOne({
-          _id: new mongoose.Types.ObjectId(parlorId)
-        })
-        .then((result) => {
-          if(!result) {
+        if(role === 'parlor_staff') {
+          if(!parlorId) {
+            res.json(errorJSON.errorOccurred('Fill in the parlor name'))
+            return
+          } else {
+            //console.log(new mongoose.Types.ObjectId(parlorId))
+            promise = Parlor.findOne({
+              _id: new mongoose.Types.ObjectId(parlorId)
+            })
+          }
+        } else {
+          promise = new Promise(function(resolve, reject) {
+            resolve(check_user)
+          });
+        }
+
+
+        promise.then((result) => {
+          if(result === check_user){
+            return User.findOne({
+              username: username
+            })
+          }else if(!result) {
             throw new Error(Constants.PARLOR_DOESNT_EXIST)
           } else {
             return User.findOne({
@@ -46,7 +65,7 @@ module.exports = {
         .then((result) => {
           if(result) {
             throw new Error(Constants.USER_ALREADY_EXISTS)
-          } else {
+          } else if(role === 'parlor_staff'){
             return User.create({
               username: username,
               password: password,
@@ -55,6 +74,13 @@ module.exports = {
               roleDetails: {
                 parlorId: parlorId
               }
+            })
+          } else {
+            return User.create({
+              username: username,
+              password: password,
+              displayName: displayName,
+              role: role
             })
           }
         })
