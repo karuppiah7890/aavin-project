@@ -45,6 +45,9 @@ $(document).ready(function(){
       } else {
         alert('No parlors available. Create parlor first')
       }
+    } else {
+      console.log('Error ', response.error)
+      alert('Some error occurred while loading the available parlors')
     }
   }
 
