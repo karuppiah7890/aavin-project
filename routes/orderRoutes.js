@@ -21,7 +21,7 @@ module.exports = {
     //GET - HTML response
     app.get('/parlorOrders', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
       if(req.user.role === 'parlor_staff') {
-        res.render('allOrders.html')
+        res.render('parlorOrders.html')
       } else {
         res.status(403).send('You are not allowed to access this page. Only Parlor Staff can access this page.');
         return
@@ -68,6 +68,39 @@ module.exports = {
     app.post('/setOrderStatus', (req, res) => {
 
       if(req.user && req.user.role === 'parlor_staff') {
+
+        const {
+          orderId,
+          orderStatus
+        } = req.body;
+
+        if(!orderId || !orderStatus) {
+          res.json(errorJSON.errorOccurred('Invalid Order ID or Order status'))
+          return
+        }
+
+        Order.findOneAndUpdate({
+          _id: new mongoose.Types.ObjectId(orderId)
+        }, {
+          orderStatus: orderStatus,
+          statusUpdatedAt: new Date()
+        }, {
+          new: true
+        })
+        .then((result) => {
+          res.json({
+            status: 'success',
+            data: {
+              _id: result._id,
+              orderStatus: result.orderStatus,
+              statusUpdatedAt: result.statusUpdatedAt
+            }
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+          res.json(errorJSON.errorOccurred(err.message))
+        })
 
       } else {
         res.json(errorJSON.accessDenied('Parlor Staff'))
