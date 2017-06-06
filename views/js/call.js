@@ -21,13 +21,6 @@ function call() {
         $('#status_txt').text('Ready');
     }
 }
-function logout() {
-    $('#status_txt').text('Logged out');
-    Plivo.conn.logout();
-    $('#callcontainer').hide();
-    $('#logout_box').hide();
-    $('#login_box').show();
-}
 function isNotEmpty(n) {
     return n.length > 0;
 }
@@ -35,7 +28,7 @@ function onCalling() {
     console.log("onCalling");
     $('#status_txt').text('Connecting....');
 }
-function  onMediaPermission (result) {
+function onMediaPermission (result) {
     if (result) {
         console.log("get media permission");
     } else {
@@ -48,9 +41,7 @@ function webrtcNotSupportedAlert() {
 }
 function onLogin() {
     $('#status_txt').text('Logged in');
-    $('#logout_box').show();
     $('#callcontainer').show();
-    $('#login_box').hide();
 }
 function onLoginFailed() {
     $('#status_txt').text("Login Failed");
@@ -64,6 +55,7 @@ function onCallAnswered() {
 }
 function onReady() {
     console.log("onReady...");
+    login();
 }
 // Initialization
 $(document).ready(function() {
@@ -76,4 +68,7 @@ $(document).ready(function() {
     Plivo.onCallAnswered = onCallAnswered;
     Plivo.onMediaPermission = onMediaPermission;
     Plivo.init();
+    $('#make_call').click(function() {
+      call()
+    })
 });

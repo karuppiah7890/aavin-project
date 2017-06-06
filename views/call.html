@@ -26,25 +26,21 @@
     </head>
     <body>
         <div class="container-narrow">
+          <a href="/">Home</a> <br>
+          <a href="/logout">Logout</a> <br> <br>
             <div class="masthead">
                 <img class="muted" src="static/logo.png">
             </div>
             <div class="row-fluid marketing">
                 <div class="span12">
-                    <h4>Plivo WebSDK Webphone Demo</h4>
-                    <div id="logout_box" style="display: none">
-                        <input class="btn" type="button" id="btn_logout" onclick="logout()" value="Logout">
-                    </div>
+                    <h4>Plivo WebSDK Webphone</h4>
                     <br>
                     <span class="label" id="status_txt">Login</span><br/><br/>
                     <form id="callcontainer" style="display: none">
                         <input type="text" name="to" value="" id="to" placeholder="Phone number or a SIP URI">
                         <br/>
-                        <a href="#" id="make_call" class="btn main-btn btn-success" onclick="call();">Call</a>
+                        <a href="#" id="make_call" class="btn main-btn btn-success">Call</a>
                     </form>
-                    <div id="login_box">
-                      <a href="#" onclick="login();">Login</a>
-                    <div>
                 </div>
             </div>
         </div>

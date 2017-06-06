@@ -242,6 +242,10 @@ function onSuccessCreateOrderFunc(response) {
       alert(Constants.ORDER_CREATED)
       const order = createOrderElement(response.data)
       $('.allOrders').prepend(order)
+      $('.updateButton').click(function(e) {
+        console.log('Update button clicked. id: ', e.target.id)
+        updateStatus(e.target.id)
+      })
     } else {
       console.log('Unknown message')
       alert('Unknown error has occurred while creating user')
