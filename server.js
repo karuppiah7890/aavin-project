@@ -13,6 +13,7 @@ const parlorRoutes = require('./routes/parlorRoutes')
 const dialRoutes = require('./routes/dialRoutes')
 const userRoutes = require('./routes/userRoutes')
 const orderRoutes = require('./routes/orderRoutes')
+const logRoutes = require('./routes/logRoutes')
 const flash = require('connect-flash')
 
 nunjucks.configure('views', {
@@ -48,6 +49,7 @@ parlorRoutes.routes(app)
 dialRoutes.routes(app)
 userRoutes.routes(app)
 orderRoutes.routes(app)
+logRoutes.routes(app)
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`)
