@@ -8,6 +8,26 @@ const ensureLogin = require('connect-ensure-login'),
 module.exports = {
   routes: function(app) {
 
+    //GET - HTML response
+    app.get('/allOrders', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+      if(req.user.role === 'admin') {
+        res.render('allOrders.html')
+      } else {
+        res.status(403).send('You are not allowed to access this page. Only Admin can access this page.');
+        return
+      }
+    })
+
+    //GET - HTML response
+    app.get('/parlorOrders', ensureLogin.ensureLoggedIn('/login'), (req, res) => {
+      if(req.user.role === 'parlor_staff') {
+        res.render('allOrders.html')
+      } else {
+        res.status(403).send('You are not allowed to access this page. Only Parlor Staff can access this page.');
+        return
+      }
+    })
+
     //POST - JSON response
     app.post('/getOrderStatus', (req, res) => {
       if(!req.user) {
@@ -93,7 +113,7 @@ module.exports = {
         limit = 10
       }
 
-      console.log('beforeTs: ', beforeTs, '. afterTs: ', afterTs);
+      console.log(' afterTs: ', afterTs, '. beforeTs: ', beforeTs);
 
       const role = req.user.role;
       let query;

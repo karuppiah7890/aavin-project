@@ -157,7 +157,7 @@ function onSuccessStatusUpdate(response) {
       } = statusDetails
 
     $(`#status${_id}`).text(orderStatus)
-    $(`#statusUpdatedAt${_id}`).text(statusUpdatedAt)
+    $(`#statusUpdatedAt${_id}`).text(getDateTime(statusUpdatedAt))
 
   } else {
     console.log('Error ', response.error)
