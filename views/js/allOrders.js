@@ -138,16 +138,20 @@ function createOrderElement(order) {
   } = order
 
   return `
-    <div id="div${_id}">
-      Order Created At: ${getDateTime(createdAt)} <br>
-      Name: ${customerName} <br>
-      Address: ${customerAddress} <br>
-      Mobile: ${customerMobile} <br>
-      Order: ${orderDetails} <br>
-      Status: <span id="status${_id}">${orderStatus}</span>
-      <button id="${_id}" class="updateButton" type="button">Refresh status</button> <br>
-      Status Updated At: <span id="statusUpdatedAt${_id}">${getDateTime(statusUpdatedAt)}</span>
-    </div> <br><br>
+  <div class="card" style="width: 20rem;" id="div${_id}">
+    <div class="card-block">
+      <p class="card-text">
+        Order Created At: ${getDateTime(createdAt)} <br>
+        Name: ${customerName} <br>
+        Address: ${customerAddress} <br>
+        Mobile: ${customerMobile} <br>
+        Order: ${orderDetails} <br>
+        Status: <span id="status${_id}">${orderStatus}</span> <br>
+        Status Updated At: <span id="statusUpdatedAt${_id}">${getDateTime(statusUpdatedAt)}</span>
+      </p>
+      <button id="${_id}" class="btn btn-primary updateButton" type="button">Refresh status</button>
+    </div>
+  </div>
   `
 }
 
