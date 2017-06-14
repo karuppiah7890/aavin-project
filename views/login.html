@@ -3,15 +3,56 @@
   <head>
     <meta charset="utf-8">
     <title>Log In</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/login.css">
   </head>
   <body>
-    {% if message %}
-      {{ message }}
-    {% endif %}
-    <form action="/login" method="post">
-      <input type="text" name="username"><br>
-      <input type="password" name="password"><br>
-      <input type="submit" value="Sign In">
-    </form>
+  <div class="container">
+
+    <div class='row' id='header-row'>
+        <div class='col-md-5'>
+          <a href='/'><h1>Aavin</h1></a>
+        </div>
+    </div>
+
+
+    <div class="row" id="center-row">
+
+        <div class="col-lg-6 col-sm-8 col-xs-12 col-lg-offset-3 col-sm-offset-2" id="form-col-login">
+          <h1 class='text-center'>LOGIN</h1>
+          <h4 class="text-center">
+            {% if message %}
+              {{ message }}
+            {% endif %}
+          </h4>
+
+
+          <form role="form" class="form-signin" action="/login" method="POST">
+              <div class='form-group form-group-lg' id='input-row'>
+                <div class='col-lg-10 col-lg-offset-1 col-sm-10 col-sm-offset-1'>
+                    <label for="inputUsername">Username</label>
+                    <input type="text" name="username" id="inputUsername" class="form-control input-lg" placeholder="Username" required autofocus>
+                </div>
+              </div>
+
+              <div class='form-group form-group-lg' id='input-row'>
+                <div class='col-lg-10 col-lg-offset-1 col-sm-10 col-sm-offset-1'>
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control input-lg" placeholder="Password" required>
+                  </div>
+              </div>
+
+              <div class='form-group'>
+                <div class='col-lg-10 col-lg-offset-1 col-sm-10 col-sm-offset-1'>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                </div>
+              </div>
+          </form>
+        </div>
+
+    </div>
+  </div>
   </body>
 </html>

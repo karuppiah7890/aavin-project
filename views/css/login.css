@@ -1,0 +1,67 @@
+#header-row
+{
+	margin-top: 15px;
+}
+
+#form-col
+{
+	/*border:1px solid #dcdcdc;*/
+	margin-top: 40px;
+	margin-bottom: 100px;
+	padding-bottom: 30px;
+	/*background-color: #f9f9f9;*/
+	background-color: white;
+	box-shadow: 0 0.3125em 1.25em 0 rgba(46,61,73,0.12);
+}
+
+#form-col-login
+{
+	border:1px solid #dcdcdc;
+	margin-top: 4.5%;
+	margin-bottom: 10px;
+	padding-bottom: 50px;
+	box-shadow: 0 0.3125em 1.25em 0 rgba(46,61,73,0.12);
+}
+
+#each-detail
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#imgInp
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#loader
+{
+	position: relative;
+	left:-12px;
+}
+
+body{
+	background-color: #fcfcfc;
+
+	font-size: 14px;
+}
+h1
+{
+	color: #307699;
+	margin-bottom: 20px;
+}
+.whiteh1
+{
+	color: white;
+}
+
+.btn-primary
+{
+	background-color: #02b3e4;
+}
+
+#error
+{
+	color: red;
+}
